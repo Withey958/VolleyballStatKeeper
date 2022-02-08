@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Volleyball Stat Keeper.Volleyball_Stat_Keeper.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Volleyball Stat Keeper.Volleyball_Stat_Keeper.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/VolleyballStatKeeper2.Volleyball_Stat_Keeper.iml" filepath="$PROJECT_DIR$/.idea/modules/VolleyballStatKeeper2.Volleyball_Stat_Keeper.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Volleyball_Stat_Keeper.iml" filepath="$PROJECT_DIR$/.idea/modules/Volleyball_Stat_Keeper.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Volleyball_Stat_Keeper.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Volleyball_Stat_Keeper.app.iml" />
     </modules>

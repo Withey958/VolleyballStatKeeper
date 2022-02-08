@@ -1,19 +1,21 @@
 package arete.arete.volleyballstatkeeper
 
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.ui.theme.VolleyballStatKeeperTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,6 +29,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview
 @Composable
 fun VolleyStatKeeperApp() {
     Scaffold(
@@ -46,12 +49,11 @@ fun VolleyStatKeeperApp() {
             )
         },
         content = {
-            //TODO add content
+            PointScreenBody()
         }
     )
 }
 
-@Preview
 @Composable
 fun PointScreenBody() {
     Surface(
@@ -61,40 +63,80 @@ fun PointScreenBody() {
             horizontal = 8.dp
         )
     ) {
-        Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-            Spacer(modifier = Modifier.size(8.dp))
-            Row(
-                modifier = Modifier,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                PlayerButton({}, "player guy")
-                PlayerButton({}, "player guy")
-                PlayerButton({}, "player guy")
-            }
-            Spacer(modifier = Modifier.size(8.dp))
-            Row(
-                modifier = Modifier,
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                PlayerButton({}, "player guy")
-                PlayerButton({}, "player guy")
-                PlayerButton({}, "player guy")
-            }
-            Spacer(modifier = Modifier.size(8.dp))
-        }
+        val players = listOf<Player>(
+            Player("Luke"),
+            Player("Charlie"),
+            Player("Wojtek"),
+            Player("Paul"),
+            Player("Haris"),
+            Player("Nick")
+        )
+        MultiToggleButtonPlayer(players)
     }
 }
 
+
 @Composable
-fun PlayerButton(
+fun MultiToggleButtonPlayer(
+    currentPlayers: List<Player>
+) {
+    var selectedPlayerIndex: Int? by remember {
+        mutableStateOf(null)
+    }
+
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 8.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.Start),
+            text = "Select Player"
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        LazyRow(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(currentPlayers.size / 2) {
+                GenericButton(
+                    onClick = { selectedPlayerIndex = it },
+                    text = currentPlayers[it].name,
+                    selectedPlayerIndex == it
+                )
+            }
+        }
+        Spacer(modifier = Modifier.size(8.dp))
+        LazyRow(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            items(currentPlayers.size / 2) {
+                GenericButton(
+                    onClick = { selectedPlayerIndex = it + currentPlayers.size / 2 },
+                    text = currentPlayers[it + currentPlayers.size / 2].name,
+                    selected = selectedPlayerIndex == it + currentPlayers.size / 2
+                )
+            }
+        }
+        Spacer(modifier = Modifier.size(8.dp))
+    }
+}
+
+
+@Composable
+fun GenericButton(
     onClick: () -> Unit,
-    text: String
+    text: String,
+    selected: Boolean
 ) {
     Button(
+        modifier = Modifier,
         onClick = onClick,
         shape = RoundedCornerShape(35),
         colors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.DarkGray,
+            backgroundColor = if (selected) Color.LightGray else Color.DarkGray,
             contentColor = Color.White
         )
     ) {
