@@ -51,5 +51,19 @@ enum class ActionType(val associatedResult: List<ActionResult>) {
             ActionResult.ONE,
             ActionResult.ZERO
         )
-    )
+    );
+
+
+    companion object {
+        /**
+         * returns all ActionTypes
+         */
+        fun getListOfActions(): List<ActionType> {
+            val actionList = mutableListOf<ActionType>()
+            for(action in ActionType.values()) {
+                actionList.add(action)
+            }
+            return actionList.toList()
+        }
+    }
 }
