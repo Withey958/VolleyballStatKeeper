@@ -131,8 +131,7 @@ fun MultiToggleButtonAction(
             items(actions.size / 2) {
                 GenericButton(
                     onClick = { selectedActionIndex = it },
-                    text = actions[it].name.substring(range = 0..0)
-                            + actions[it].name.substring(startIndex = 1).lowercase(),
+                    text = uppercaseStringToCapLowercase(actions[it].name),
                     selectedActionIndex == it
                 )
             }
@@ -145,8 +144,7 @@ fun MultiToggleButtonAction(
             items(actions.size / 2) {
                 GenericButton(
                     onClick = { selectedActionIndex = it + actions.size / 2 },
-                    text = actions[it + actions.size / 2].name.substring(range = 0..0)
-                            + actions[it + actions.size / 2].name.substring(startIndex = 1).lowercase(),
+                    text = uppercaseStringToCapLowercase(actions[it + actions.size / 2].name),
                     selected = selectedActionIndex == it + actions.size / 2
                 )
             }
@@ -173,4 +171,8 @@ fun GenericButton(
     ) {
         Text(text = text)
     }
+}
+
+private fun uppercaseStringToCapLowercase(string: String): String {
+    return "${string.substring(range = 0..0)}${string.substring(startIndex = 1).lowercase()}"
 }
