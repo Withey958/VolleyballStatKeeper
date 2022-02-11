@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import arete.arete.volleyballstatkeeper.model.ActionType
 import arete.arete.volleyballstatkeeper.model.Player
+import arete.arete.volleyballstatkeeper.ui.theme.spacing
 
 private const val TAG = "ScreenAction"
 
@@ -26,8 +27,8 @@ fun ActionScreen() {
     Surface(
         color = MaterialTheme.colors.background,
         modifier = Modifier.padding(
-            vertical = 4.dp,
-            horizontal = 8.dp
+            vertical = MaterialTheme.spacing.extraSmall,
+            horizontal = MaterialTheme.spacing.small
         )
     ) {
         val players = listOf<Player>(
@@ -64,10 +65,11 @@ fun MultiToggleButtonPlayer(
     var selectedPlayerIndex: Int? by rememberSaveable {
         mutableStateOf(null)
     }
-
+    val actionViewModel: ScreenActionViewModel = ScreenActionViewModel()
+    
     Column(
         modifier = Modifier
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = MaterialTheme.spacing.small)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -75,10 +77,10 @@ fun MultiToggleButtonPlayer(
             modifier = Modifier.align(Alignment.Start),
             text = "Select Player"
         )
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(MaterialTheme.spacing.small))
         LazyRow(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
         ) {
             items(currentPlayers.size / 2) {
                 GenericButton(
@@ -88,10 +90,10 @@ fun MultiToggleButtonPlayer(
                 )
             }
         }
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(MaterialTheme.spacing.small))
         LazyRow(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
         ) {
             items(currentPlayers.size / 2) {
                 GenericButton(
@@ -115,7 +117,7 @@ fun MultiToggleButtonAction(
 
     Column(
         modifier = Modifier
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = MaterialTheme.spacing.small)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -123,10 +125,10 @@ fun MultiToggleButtonAction(
             modifier = Modifier.align(Alignment.Start),
             text = "Select Action"
         )
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(MaterialTheme.spacing.small))
         LazyRow(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
         ) {
             items(actions.size / 2) {
                 GenericButton(
@@ -136,10 +138,10 @@ fun MultiToggleButtonAction(
                 )
             }
         }
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(MaterialTheme.spacing.small))
         LazyRow(
             modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
         ) {
             items(actions.size / 2) {
                 GenericButton(
@@ -149,7 +151,7 @@ fun MultiToggleButtonAction(
                 )
             }
         }
-        Spacer(modifier = Modifier.size(8.dp))
+        Spacer(modifier = Modifier.size(MaterialTheme.spacing.small))
     }
 }
 

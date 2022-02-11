@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.ui.actionscreen.ActionScreen
 import arete.arete.volleyballstatkeeper.ui.theme.VolleyballStatKeeperTheme
@@ -23,6 +24,7 @@ import arete.arete.volleyballstatkeeper.ui.theme.VolleyballStatKeeperTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             VolleyballStatKeeperTheme() {
                 VolleyStatKeeperApp()
