@@ -20,7 +20,9 @@ import androidx.lifecycle.lifecycleScope
 import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.ui.actionscreen.ActionScreen
 import arete.arete.volleyballstatkeeper.ui.theme.VolleyballStatKeeperTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

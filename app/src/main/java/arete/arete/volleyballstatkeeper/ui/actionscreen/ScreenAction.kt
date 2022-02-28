@@ -66,7 +66,7 @@ fun MultiToggleButtonPlayer(
         mutableStateOf(null)
     }
     val actionViewModel: ScreenActionViewModel = ScreenActionViewModel()
-    
+
     Column(
         modifier = Modifier
             .padding(horizontal = MaterialTheme.spacing.small)
