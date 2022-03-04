@@ -3,9 +3,9 @@ package arete.arete.volleyballstatkeeper.model
 /**
  * class with action types and there associated results
  *
- * @param associatedResult potential results of the action
+ * @param associatedResults potential results of the action
  */
-enum class ActionType(val associatedResult: List<ActionResult>) {
+enum class ActionType(val associatedResults: List<ActionResult>) {
     ATTACK(
         listOf(
             ActionResult.KILL,

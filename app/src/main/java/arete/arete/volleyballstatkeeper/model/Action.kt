@@ -11,7 +11,7 @@ class Action(
     lateinit var actionResult: ActionResult
 
     fun getActionResultList(): List<ActionResult> {
-        return actionType.associatedResult
+        return actionType.associatedResults
     }
 
     fun setResult(result: ActionResult) {
