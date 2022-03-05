@@ -7,6 +7,9 @@ enum class VolleyballStatKeeperScreen(
 ) {
     ActionScreen(
         body = { arete.arete.volleyballstatkeeper.ui.actionscreen.ActionScreen() }
+    ),
+    PointScreen(
+        body = {}
     );
 
 

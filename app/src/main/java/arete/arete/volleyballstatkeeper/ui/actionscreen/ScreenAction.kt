@@ -1,6 +1,5 @@
 package arete.arete.volleyballstatkeeper.ui.actionscreen
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,23 +42,31 @@ fun ActionScreen(
 
         val actions = ActionType.getListOfActions()
 
-        Log.d(
-            TAG, "ActionScreen: ${
-                actions.forEach {
-                    it.name
-                }
-            }"
-        )
-
         val actionResultList by remember {
             viewModel.actionResultList
         }
 
+        val actionSelectedResult by remember {
+            viewModel.resultSelectedState
+        }
+
         Column {
+            //TODO(lazy way of doing this make multi toggle buttons generic)
             MultiToggleButtonPlayer(players, viewModel)
             MultiToggleButtonAction(actions, viewModel)
-            if(actionResultList.isNotEmpty()) {
+            if (actionResultList.isNotEmpty()) {
                 MultiToggleButtonResult(actionResultList, viewModel)
+            }
+            if (actionSelectedResult != null) {
+                Spacer(modifier = Modifier.padding(16.dp))
+                Button(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    Text(text = "Enter Result")
+                }
             }
         }
     }

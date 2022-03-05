@@ -1,17 +1,15 @@
 package arete.arete.volleyballstatkeeper.model
 
 class Set(game: Game) {
-    var score: Pair<Int, Int> = Pair(0,0)
+
+    var score: MutableMap<Team, Int> = mutableMapOf(
+        Pair(game.homeTeam, 0),
+        Pair(game.awayTeam, 0)
+    )
     var points: ArrayList<Point> = arrayListOf()
-}
 
-class Game(
-    val homeTeam: Team,
-    val awayTeam: Team
-) {
-    val sets: ArrayList<Set> = arrayListOf()
-
-    fun setSet(set: Set, setNo: Int) {
-        sets.add(setNo, set)
+    fun addPoint(point: Point) {
+        score[point.winningTeam] = score[point.winningTeam]!! + 1
+        points.add(point)
     }
 }
