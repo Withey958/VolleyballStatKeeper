@@ -4,12 +4,12 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arete.arete.volleyballstatkeeper.VolleyballStatKeeperScreen
 import arete.arete.volleyballstatkeeper.model.Action
 import arete.arete.volleyballstatkeeper.model.ActionResult
 import arete.arete.volleyballstatkeeper.model.ActionType
 import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.repositories.GameRepository
-import arete.arete.volleyballstatkeeper.util.Routes
 import arete.arete.volleyballstatkeeper.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -59,7 +59,7 @@ class ScreenActionViewModel @Inject constructor(private val repository: GameRepo
                         actionResult = resultSelectedState.value!!
                     )
                 )
-                sendUiEvent(UiEvent.Navigate(Routes.POINT))
+                sendUiEvent(UiEvent.Navigate(VolleyballStatKeeperScreen.PointScreen.name))
             }
         }
     }

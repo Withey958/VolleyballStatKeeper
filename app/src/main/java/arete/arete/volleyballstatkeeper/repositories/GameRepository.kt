@@ -1,6 +1,7 @@
 package arete.arete.volleyballstatkeeper.repositories
 
 import arete.arete.volleyballstatkeeper.model.Action
+import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.model.Point
 import arete.arete.volleyballstatkeeper.model.Team
 
@@ -10,4 +11,6 @@ interface GameRepository {
     fun newPoint(point: Point)
     fun addAction(action: Action)
     fun clearGame()
+    fun getSetScore(): Map<Team, Int>
+    fun getPointActions(): ArrayList<Action>
 }

@@ -23,7 +23,6 @@ class GameRepositoryImpl: GameRepository {
             Log.d(TAG, "newSet: game is not init please set Teams")
             return
         }
-
         val newSet = Set(game!!)
         if(game?.sets?.size!! > 2) {
             game?.setSet(newSet, game?.sets?.size!!)
@@ -32,9 +31,19 @@ class GameRepositoryImpl: GameRepository {
         }
     }
 
+    override fun getSetScore(): Map<Team, Int> {
+        val thisSet = game?.sets?.size!!
+        return game!!.sets[thisSet].score
+    }
+
     override fun newPoint(point: Point) {
         val currentSet = game?.sets?.last()
         currentSet?.addPoint(point)
+    }
+
+    override fun getPointActions(): ArrayList<Action> {
+        val currentSet = game?.sets?.last()
+        return currentSet?.points?.last()?.getActions()!!
     }
 
     override fun addAction(action: Action) {

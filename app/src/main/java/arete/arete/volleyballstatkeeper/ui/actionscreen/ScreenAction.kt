@@ -22,7 +22,6 @@ import kotlinx.coroutines.InternalCoroutinesApi
 
 private const val TAG = "ScreenAction"
 
-@Preview
 @Composable
 fun ActionScreen(
     viewModel: ScreenActionViewModel = hiltViewModel(),
