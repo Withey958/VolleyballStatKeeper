@@ -16,14 +16,26 @@ import arete.arete.volleyballstatkeeper.model.ActionResult
 import arete.arete.volleyballstatkeeper.model.ActionType
 import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.ui.theme.spacing
+import kotlinx.coroutines.flow.collect
+import arete.arete.volleyballstatkeeper.util.UiEvent
+import kotlinx.coroutines.InternalCoroutinesApi
 
 private const val TAG = "ScreenAction"
 
 @Preview
 @Composable
 fun ActionScreen(
-    viewModel: ScreenActionViewModel = hiltViewModel()
+    viewModel: ScreenActionViewModel = hiltViewModel(),
+    onNavigate: (UiEvent.Navigate) -> Unit
 ) {
+
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { event ->
+            when(event) {
+                is UiEvent.Navigate -> onNavigate(event)
+            }
+        }
+    }
     Surface(
         color = MaterialTheme.colors.background,
         modifier = Modifier.padding(
@@ -31,6 +43,7 @@ fun ActionScreen(
             horizontal = MaterialTheme.spacing.small
         )
     ) {
+
         val players = listOf<Player>(
             Player("Luke"),
             Player("Charlie"),

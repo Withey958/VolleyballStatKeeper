@@ -80,7 +80,9 @@ fun VolleyballStateKeeperNavHost(navController: NavHostController, modifier: Mod
         modifier = modifier
     ) {
         composable(VolleyballStatKeeperScreen.ActionScreen.name) {
-            ActionScreen()
+            ActionScreen(
+                onNavigate = { navController.navigate(it.route) }
+            )
         }
     }
 }

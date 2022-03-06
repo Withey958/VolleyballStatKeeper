@@ -7,8 +7,8 @@ private const val TAG = "Action"
 class Action(
     val player: Player,
     val actionType: ActionType,
+    var actionResult: ActionResult
 ) {
-    lateinit var actionResult: ActionResult
 
     fun getActionResultList(): List<ActionResult> {
         return actionType.associatedResults

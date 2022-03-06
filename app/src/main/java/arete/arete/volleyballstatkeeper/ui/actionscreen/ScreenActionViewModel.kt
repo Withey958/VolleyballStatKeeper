@@ -3,15 +3,28 @@ package arete.arete.volleyballstatkeeper.ui.actionscreen
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import arete.arete.volleyballstatkeeper.model.Action
 import arete.arete.volleyballstatkeeper.model.ActionResult
 import arete.arete.volleyballstatkeeper.model.ActionType
 import arete.arete.volleyballstatkeeper.model.Player
+import arete.arete.volleyballstatkeeper.repositories.GameRepository
+import arete.arete.volleyballstatkeeper.util.Routes
+import arete.arete.volleyballstatkeeper.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "ScreenActionViewModel"
+
 @HiltViewModel
-class ScreenActionViewModel @Inject constructor(): ViewModel() {
+class ScreenActionViewModel @Inject constructor(private val repository: GameRepository) :
+    ViewModel() {
+
+    private val _uiEvent =  Channel<UiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     var playerSelectedState = mutableStateOf<Player?>(null)
         private set
@@ -38,6 +51,22 @@ class ScreenActionViewModel @Inject constructor(): ViewModel() {
                 resultSelectedState.value = event.resultType
                 Log.d(TAG, "onEvent: selected action ${event.resultType}")
             }
+            is ActionEvent.OnEnterResult -> {
+                repository.addAction(
+                    Action(
+                        player = playerSelectedState.value!!,
+                        actionType = actionSelectedState.value!!,
+                        actionResult = resultSelectedState.value!!
+                    )
+                )
+                sendUiEvent(UiEvent.Navigate(Routes.POINT))
+            }
+        }
+    }
+
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send(event)
         }
     }
 
