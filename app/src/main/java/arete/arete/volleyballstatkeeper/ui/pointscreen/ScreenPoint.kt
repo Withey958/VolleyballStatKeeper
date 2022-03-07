@@ -5,6 +5,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -39,7 +41,7 @@ fun PointScreen(
         val currentSetScore by remember {
             viewModel.setScoreState
         }
-
+        val scaffoldState = rememberScaffoldState()
 //        val actionList by remember {
 //            viewModel.pointActionListState
 //        }
@@ -47,14 +49,31 @@ fun PointScreen(
             Action(Player("Keith"), ActionType.ATTACK, ActionResult.BLOCKED)
         )
 
-        Column(modifier = Modifier) {
-            Row() {
-                Text(text = "Whats happened in this point")
-                Text(text = "Score")
+        Scaffold(
+            scaffoldState = scaffoldState,
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = {
+                        //TODO add on click
+                    },
+                    backgroundColor = MaterialTheme.colors.primary
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Add"
+                    )
+                }
             }
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(actionList) { action ->
-                    ActionItem(action, actionList.indexOf(action) + 1)
+        ) {
+            Column(modifier = Modifier) {
+                Row() {
+                    Text(text = "Whats happened in this point")
+                    Text(text = "Score")
+                }
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(actionList) { action ->
+                        ActionItem(action, actionList.indexOf(action) + 1)
+                    }
                 }
             }
         }
@@ -68,11 +87,12 @@ fun ActionItem(
     modifier: Modifier = Modifier
 ) {
     Card(
-        shape = RoundedCornerShape(4.dp),
+        shape = RoundedCornerShape(16.dp),
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         elevation = 8.dp,
+        backgroundColor = MaterialTheme.colors.secondary
     ) {
         Row(
             modifier = Modifier
@@ -87,6 +107,7 @@ fun ActionItem(
                 Icon(
                     painter = painterResource(id = action.actionType.iconId),
                     contentDescription = null,
+                    tint = Color.White,
                     modifier = Modifier
                         .fillMaxHeight(0.5f)
                         .size(64.dp)
@@ -99,20 +120,20 @@ fun ActionItem(
             ) {
                 Text(
                     text = action.player.name,
-                    color = Color.Gray,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
                 )
                 Spacer(modifier = Modifier.size(16.dp))
                 Text(
                     text = "Action: ${action.actionType}",
-                    color = Color.Gray,
+                    color = Color.White,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 12.sp
                 )
                 Text(
                     text = "Result: ${action.actionResult.toString()}",
-                    color = Color.Gray,
+                    color = Color.White,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 12.sp
                 )
@@ -120,25 +141,26 @@ fun ActionItem(
             }
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Top
             ) {
                 Text(
-                    text = indexNo.toString(),
-                    color = Color.DarkGray,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    modifier = Modifier.fillMaxHeight()
-                )
-                Text(
                     text = "Action Number",
-                    color = Color.DarkGray,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp,
                     modifier = Modifier.fillMaxHeight()
                 )
+                Text(
+                    text = indexNo.toString(),
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    modifier = Modifier.fillMaxHeight()
+                )
+
             }
         }
     }
