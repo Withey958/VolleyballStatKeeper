@@ -30,7 +30,7 @@ class ScreenPointViewModel @Inject constructor(private val repository: GameRepos
         when (event) {
             is PointEvent.OnScreenOpened -> {
                 setScoreState.value = repository.getSetScore()
-                pointActionListState.value = repository.getPointActions()
+//                pointActionListState.value = repository.getPointActions()
             }
         }
     }

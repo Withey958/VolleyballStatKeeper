@@ -10,6 +10,10 @@ class GameRepositoryImpl: GameRepository {
     var game: Game? = null
         private set
 
+    init {
+        setTeams(Team("homeTeam"), Team("awayTeam"))
+    }
+
     override fun clearGame() {
         game = null
     }
@@ -24,7 +28,7 @@ class GameRepositoryImpl: GameRepository {
             return
         }
         val newSet = Set(game!!)
-        if(game?.sets?.size!! > 2) {
+        if(game?.sets?.size!! < 2) {
             game?.setSet(newSet, game?.sets?.size!!)
         } else {
             Log.d(TAG, "newSet: Game Over")
@@ -32,7 +36,10 @@ class GameRepositoryImpl: GameRepository {
     }
 
     override fun getSetScore(): Map<Team, Int> {
-        val thisSet = game?.sets?.size!!
+        if(game?.sets?.size!! == 0) {
+            newSet()
+        }
+        val thisSet = game?.sets?.size!! - 1
         return game!!.sets[thisSet].score
     }
 
