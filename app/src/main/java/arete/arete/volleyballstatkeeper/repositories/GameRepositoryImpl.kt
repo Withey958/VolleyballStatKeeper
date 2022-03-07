@@ -54,6 +54,7 @@ class GameRepositoryImpl: GameRepository {
     }
 
     override fun addAction(action: Action) {
+
         val currentSet = game?.sets?.last()
         currentSet?.points?.last()?.addAction(action)
         when(action.actionResult) {

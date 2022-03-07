@@ -72,7 +72,7 @@ fun ActionScreen(
             if (actionSelectedResult != null) {
                 Spacer(modifier = Modifier.padding(16.dp))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { viewModel.onEvent(ActionEvent.OnEnterResult) },
                     modifier = Modifier
                         .padding(8.dp)
                         .align(Alignment.CenterHorizontally)

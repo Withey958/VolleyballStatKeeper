@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,10 +25,13 @@ import arete.arete.volleyballstatkeeper.model.ActionResult
 import arete.arete.volleyballstatkeeper.model.ActionType
 import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.ui.theme.spacing
+import arete.arete.volleyballstatkeeper.util.UiEvent
+import kotlinx.coroutines.flow.collect
 
-@Preview
+
 @Composable
 fun PointScreen(
+    onNavigate: (UiEvent.Navigate) -> Unit,
     viewModel: ScreenPointViewModel = hiltViewModel()
 ) {
     Surface(
@@ -49,12 +53,20 @@ fun PointScreen(
             Action(Player("Keith"), ActionType.ATTACK, ActionResult.BLOCKED)
         )
 
+        LaunchedEffect(key1 = true) {
+            viewModel.uiEvent.collect { event ->
+                when(event) {
+                    is UiEvent.Navigate -> onNavigate(event)
+                    else -> Unit
+                }
+            }
+        }
         Scaffold(
             scaffoldState = scaffoldState,
             floatingActionButton = {
                 FloatingActionButton(
                     onClick = {
-                        //TODO add on click
+                        viewModel.onEvent(PointEvent.AddAction)
                     },
                     backgroundColor = MaterialTheme.colors.primary
                 ) {
