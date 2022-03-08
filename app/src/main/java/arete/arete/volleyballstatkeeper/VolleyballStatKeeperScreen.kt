@@ -5,7 +5,8 @@ import androidx.compose.runtime.Composable
 enum class VolleyballStatKeeperScreen(
 ) {
     ActionScreen,
-    PointScreen;
+    PointScreen,
+    GameScreen;
 
 
     companion object {
@@ -13,6 +14,7 @@ enum class VolleyballStatKeeperScreen(
             when (route?.substringBefore("/")) {
                 ActionScreen.name -> ActionScreen
                 PointScreen.name -> PointScreen
+                GameScreen.name -> GameScreen
                 null -> ActionScreen
                 else -> throw IllegalArgumentException("Route $route is not recognized.")
             }

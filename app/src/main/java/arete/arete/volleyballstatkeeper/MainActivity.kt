@@ -28,6 +28,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.ui.actionscreen.ActionScreen
+import arete.arete.volleyballstatkeeper.ui.gamescreen.GameScreen
 import arete.arete.volleyballstatkeeper.ui.pointscreen.PointScreen
 import arete.arete.volleyballstatkeeper.ui.theme.VolleyballStatKeeperTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -87,6 +88,11 @@ fun VolleyballStateKeeperNavHost(navController: NavHostController, modifier: Mod
         }
         composable(VolleyballStatKeeperScreen.PointScreen.name) {
             PointScreen(
+                onNavigate = { navController.navigate(it.route) }
+            )
+        }
+        composable(VolleyballStatKeeperScreen.GameScreen.name) {
+            GameScreen(
                 onNavigate = { navController.navigate(it.route) }
             )
         }
