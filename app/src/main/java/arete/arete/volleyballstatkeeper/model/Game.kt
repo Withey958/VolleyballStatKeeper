@@ -6,7 +6,7 @@ class Game(
 ) {
     val sets: ArrayList<Set> = arrayListOf()
 
-    fun setSet(set: Set, setNo: Int) {
-        sets.add(setNo, set)
+    fun setSet(set: Set) {
+        sets.add(set)
     }
 }

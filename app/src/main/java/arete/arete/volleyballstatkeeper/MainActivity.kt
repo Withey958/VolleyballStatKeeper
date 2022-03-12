@@ -78,7 +78,7 @@ fun VolleyStatKeeperApp() {
 fun VolleyballStateKeeperNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
-        startDestination = VolleyballStatKeeperScreen.PointScreen.name,
+        startDestination = VolleyballStatKeeperScreen.GameScreen.name,
         modifier = modifier
     ) {
         composable(VolleyballStatKeeperScreen.ActionScreen.name) {

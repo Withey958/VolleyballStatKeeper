@@ -1,5 +1,6 @@
 package arete.arete.volleyballstatkeeper.ui.gamescreen
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,6 +11,9 @@ import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +27,7 @@ import arete.arete.volleyballstatkeeper.model.VolleyballPosition
 import arete.arete.volleyballstatkeeper.ui.theme.spacing
 import arete.arete.volleyballstatkeeper.util.UiEvent
 
+private const val TAG = "ScreenGame"
 @Composable
 fun GameScreen(
     onNavigate: (UiEvent.Navigate) -> Unit,
@@ -35,18 +40,25 @@ fun GameScreen(
             horizontal = MaterialTheme.spacing.small
         )
     ) {
-
         LaunchedEffect(key1 = true) {
+        }
+
+        viewModel.onEvent(GameEvent.OnGameStarted)
+
+        val currentGame by remember {
+            viewModel.gameState
+        }
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+            ScoreBoard(currentGame)
+            PlayerLists(modifier = Modifier, game = currentGame)
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        ScoreBoard()
-    }
 }
 
 @Composable
-fun ScoreBoard() {
+fun ScoreBoard(game: Game?) {
     Card(
         backgroundColor = Color.DarkGray,
         modifier = Modifier
@@ -57,7 +69,7 @@ fun ScoreBoard() {
         Column(
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxSize(),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom
         ) {
@@ -70,7 +82,7 @@ fun ScoreBoard() {
             ) {
                 Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = null)
                 Text(
-                    text = "1 - 3",
+                    text = "${game!!.sets.last().score[game.homeTeam]} - ${game!!.sets.last().score[game.awayTeam]}",
                     color = Color.White,
                     fontSize = 36.sp,
                     fontWeight = FontWeight.ExtraBold
@@ -84,29 +96,29 @@ fun ScoreBoard() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Text(text = "team 1", color = Color.White)
-                Text(text = "Set 1", color = Color.Green)
-                Text(text = "team 2", color = Color.White)
+                Text(text = "team ${game!!.homeTeam.name}", color = Color.White)
+                Text(text = "Set ${game!!.sets.size}", color = Color.Green)
+                Text(text = "team ${game!!.awayTeam.name}", color = Color.White)
             }
         }
     }
 }
 
 @Composable
-fun PlayerLists(modifier: Modifier, game: Game) {
-    Row(modifier = modifier) {
-        if (game.homeTeam.teamPlayers != null) {
-            LazyColumn {
+fun PlayerLists(modifier: Modifier, game: Game?) {
+    Row(modifier = modifier.fillMaxWidth()) {
+        if (game!!.homeTeam.teamPlayers != null) {
+            LazyColumn(modifier = Modifier.fillMaxWidth(0.5f)) {
                 items(game.homeTeam.teamPlayers!!) { homePlayer ->
-                    PlayerItem(player = homePlayer, modifier = modifier)
+                    PlayerItem(player = homePlayer, modifier = modifier.height(64.dp))
                 }
             }
         }
-
+        Log.d(TAG, "PlayerLists: awayteam = ${game.awayTeam.teamPlayers}")
         if (game.awayTeam.teamPlayers != null) {
-            LazyColumn {
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 items(game.awayTeam.teamPlayers!!) { awayPlayer ->
-                    PlayerItem(player = awayPlayer, modifier = modifier)
+                    PlayerItem(player = awayPlayer, modifier = modifier.height(64.dp))
                 }
             }
         }
@@ -133,7 +145,7 @@ fun PlayerItem(
                     .fillMaxWidth()
                     .padding(8.dp),
             ) {
-                Text(text = "Number", color = Color.DarkGray, fontWeight = FontWeight.Bold)
+                Text(text = player.name, color = Color.Blue, fontWeight = FontWeight.Bold)
                 Text(text = VolleyballPosition.MIDDLE.toString(), color = Color.DarkGray)
             }
             Text(
