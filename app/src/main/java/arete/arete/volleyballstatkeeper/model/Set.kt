@@ -8,6 +8,10 @@ class Set(game: Game) {
     )
     var points: ArrayList<Point> = arrayListOf()
 
+    fun newPoint(point: Point) {
+        points.add(point)
+    }
+
     fun addPoint(point: Point) {
         score[point.winningTeam] = score[point.winningTeam]!! + 1
         points.add(point)

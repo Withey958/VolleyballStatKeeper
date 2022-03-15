@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arete.arete.volleyballstatkeeper.VolleyballStatKeeperScreen
 import arete.arete.volleyballstatkeeper.model.Game
 import arete.arete.volleyballstatkeeper.repositories.GameRepository
 import arete.arete.volleyballstatkeeper.util.UiEvent
@@ -28,6 +29,9 @@ class ScreenGameViewModel @Inject constructor(private val repository: GameReposi
                     repository.newGame(null, null)
                 }
                 gameState.value = repository.getCurrentGame()!!
+            }
+            is GameEvent.AddPoint -> {
+                sendUiEvent(UiEvent.Navigate(VolleyballStatKeeperScreen.PointScreen.name))
             }
         }
     }

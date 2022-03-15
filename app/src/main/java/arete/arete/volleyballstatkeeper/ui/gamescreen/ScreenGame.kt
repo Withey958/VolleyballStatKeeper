@@ -3,17 +3,16 @@ package arete.arete.volleyballstatkeeper.ui.gamescreen
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,10 +23,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import arete.arete.volleyballstatkeeper.model.Game
 import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.model.VolleyballPosition
+import arete.arete.volleyballstatkeeper.ui.pointscreen.PointEvent
 import arete.arete.volleyballstatkeeper.ui.theme.spacing
 import arete.arete.volleyballstatkeeper.util.UiEvent
+import kotlinx.coroutines.flow.collect
 
 private const val TAG = "ScreenGame"
+
 @Composable
 fun GameScreen(
     onNavigate: (UiEvent.Navigate) -> Unit,
@@ -41,6 +43,12 @@ fun GameScreen(
         )
     ) {
         LaunchedEffect(key1 = true) {
+            viewModel.uiEvent.collect { event ->
+                when(event) {
+                    is UiEvent.Navigate -> onNavigate(event)
+                    else -> Unit
+                }
+            }
         }
 
         viewModel.onEvent(GameEvent.OnGameStarted)
@@ -52,6 +60,7 @@ fun GameScreen(
         Column(modifier = Modifier.fillMaxWidth()) {
             ScoreBoard(currentGame)
             PlayerLists(modifier = Modifier, game = currentGame)
+            AddPointButton(viewModel = viewModel)
         }
     }
 
@@ -107,18 +116,22 @@ fun ScoreBoard(game: Game?) {
 @Composable
 fun PlayerLists(modifier: Modifier, game: Game?) {
     Row(modifier = modifier.fillMaxWidth()) {
-        if (game!!.homeTeam.teamPlayers != null) {
-            LazyColumn(modifier = Modifier.fillMaxWidth(0.5f)) {
+        LazyColumn(modifier = Modifier
+            .fillMaxWidth(0.5f)
+            .padding(8.dp)) {
+            if (game!!.homeTeam.teamPlayers != null) {
                 items(game.homeTeam.teamPlayers!!) { homePlayer ->
-                    PlayerItem(player = homePlayer, modifier = modifier.height(64.dp))
+                    PlayerItem(player = homePlayer, modifier = modifier.height(40.dp))
                 }
             }
         }
-        Log.d(TAG, "PlayerLists: awayteam = ${game.awayTeam.teamPlayers}")
-        if (game.awayTeam.teamPlayers != null) {
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        Log.d(TAG, "PlayerLists: awayteam = ${game!!.awayTeam.teamPlayers}")
+        LazyColumn(modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)) {
+            if (game.awayTeam.teamPlayers != null) {
                 items(game.awayTeam.teamPlayers!!) { awayPlayer ->
-                    PlayerItem(player = awayPlayer, modifier = modifier.height(64.dp))
+                    PlayerItem(player = awayPlayer, modifier = modifier.height(40.dp))
                 }
             }
         }
@@ -132,30 +145,23 @@ fun PlayerItem(
     modifier: Modifier
 ) {
     Card(
-        backgroundColor = MaterialTheme.colors.primary,
-        modifier = Modifier
+        backgroundColor = Color.LightGray,
+        modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(4.dp),
         shape = RoundedCornerShape(24.dp),
-        elevation = 4.dp
+        elevation = 4.dp,
     ) {
-        Row(modifier = modifier) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-            ) {
-                Text(text = player.name, color = Color.Blue, fontWeight = FontWeight.Bold)
-                Text(text = VolleyballPosition.MIDDLE.toString(), color = Color.DarkGray)
-            }
-            Text(
-                text = player.name,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.ExtraBold,
-                color = Color.White
-            )
-
+        Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
+            Text(text = player.name, color = Color.Black, fontWeight = FontWeight.Bold)
+            Text(text = VolleyballPosition.MIDDLE.toString(), color = Color.DarkGray, fontSize = 14.sp)
         }
     }
+}
 
+@Composable
+fun AddPointButton(viewModel: ScreenGameViewModel) {
+    Button(onClick = {viewModel.onEvent(GameEvent.AddPoint)}, modifier = Modifier.padding(16.dp)) {
+        Text(text = "add point")
+    }
 }
