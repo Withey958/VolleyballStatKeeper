@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
@@ -23,7 +24,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import arete.arete.volleyballstatkeeper.model.Game
 import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.model.VolleyballPosition
-import arete.arete.volleyballstatkeeper.ui.pointscreen.PointEvent
 import arete.arete.volleyballstatkeeper.ui.theme.spacing
 import arete.arete.volleyballstatkeeper.util.UiEvent
 import kotlinx.coroutines.flow.collect
@@ -44,7 +44,7 @@ fun GameScreen(
     ) {
         LaunchedEffect(key1 = true) {
             viewModel.uiEvent.collect { event ->
-                when(event) {
+                when (event) {
                     is UiEvent.Navigate -> onNavigate(event)
                     else -> Unit
                 }
@@ -57,7 +57,10 @@ fun GameScreen(
             viewModel.gameState
         }
 
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             ScoreBoard(currentGame)
             PlayerLists(modifier = Modifier, game = currentGame)
             AddPointButton(viewModel = viewModel)
@@ -91,7 +94,7 @@ fun ScoreBoard(game: Game?) {
             ) {
                 Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = null)
                 Text(
-                    text = "${game!!.sets.last().score[game.homeTeam]} - ${game!!.sets.last().score[game.awayTeam]}",
+                    text = "${game!!.sets.last().score[game.homeTeam]} - ${game.sets.last().score[game.awayTeam]}",
                     color = Color.White,
                     fontSize = 36.sp,
                     fontWeight = FontWeight.ExtraBold
@@ -106,8 +109,8 @@ fun ScoreBoard(game: Game?) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(text = "team ${game!!.homeTeam.name}", color = Color.White)
-                Text(text = "Set ${game!!.sets.size}", color = Color.Green)
-                Text(text = "team ${game!!.awayTeam.name}", color = Color.White)
+                Text(text = "Set ${game.sets.size}", color = Color.Green)
+                Text(text = "team ${game.awayTeam.name}", color = Color.White)
             }
         }
     }
@@ -116,9 +119,11 @@ fun ScoreBoard(game: Game?) {
 @Composable
 fun PlayerLists(modifier: Modifier, game: Game?) {
     Row(modifier = modifier.fillMaxWidth()) {
-        LazyColumn(modifier = Modifier
-            .fillMaxWidth(0.5f)
-            .padding(8.dp)) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
+                .padding(8.dp)
+        ) {
             if (game!!.homeTeam.teamPlayers != null) {
                 items(game.homeTeam.teamPlayers!!) { homePlayer ->
                     PlayerItem(player = homePlayer, modifier = modifier.height(40.dp))
@@ -126,9 +131,11 @@ fun PlayerLists(modifier: Modifier, game: Game?) {
             }
         }
         Log.d(TAG, "PlayerLists: awayteam = ${game!!.awayTeam.teamPlayers}")
-        LazyColumn(modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
             if (game.awayTeam.teamPlayers != null) {
                 items(game.awayTeam.teamPlayers!!) { awayPlayer ->
                     PlayerItem(player = awayPlayer, modifier = modifier.height(40.dp))
@@ -152,16 +159,37 @@ fun PlayerItem(
         shape = RoundedCornerShape(24.dp),
         elevation = 4.dp,
     ) {
-        Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceEvenly) {
+        Row(
+            modifier = Modifier,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
             Text(text = player.name, color = Color.Black, fontWeight = FontWeight.Bold)
-            Text(text = VolleyballPosition.MIDDLE.toString(), color = Color.DarkGray, fontSize = 14.sp)
+            Text(
+                text = VolleyballPosition.MIDDLE.toString(),
+                color = Color.DarkGray,
+                fontSize = 14.sp
+            )
         }
     }
 }
 
 @Composable
 fun AddPointButton(viewModel: ScreenGameViewModel) {
-    Button(onClick = {viewModel.onEvent(GameEvent.AddPoint)}, modifier = Modifier.padding(16.dp)) {
-        Text(text = "add point")
+    Button(
+        onClick = { viewModel.onEvent(GameEvent.AddPoint) },
+        modifier = Modifier
+            .padding(16.dp)
+            .size(width = 160.dp, height = 64.dp),
+        shape = RoundedCornerShape(24.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(imageVector = Icons.Default.AddCircle, contentDescription = "Add Circle")
+            Text(text = "New Point")
+        }
     }
 }

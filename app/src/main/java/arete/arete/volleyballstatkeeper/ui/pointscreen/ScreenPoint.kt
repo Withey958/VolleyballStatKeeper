@@ -1,5 +1,6 @@
 package arete.arete.volleyballstatkeeper.ui.pointscreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,15 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import arete.arete.volleyballstatkeeper.model.Action
-import arete.arete.volleyballstatkeeper.model.ActionResult
-import arete.arete.volleyballstatkeeper.model.ActionType
-import arete.arete.volleyballstatkeeper.model.Player
-import arete.arete.volleyballstatkeeper.ui.theme.spacing
 import arete.arete.volleyballstatkeeper.util.UiEvent
 import kotlinx.coroutines.flow.collect
 
@@ -36,10 +32,7 @@ fun PointScreen(
 ) {
     Surface(
         color = MaterialTheme.colors.background,
-        modifier = Modifier.padding(
-            vertical = MaterialTheme.spacing.extraSmall,
-            horizontal = MaterialTheme.spacing.small
-        )
+        modifier = Modifier
     ) {
         viewModel.onEvent(PointEvent.OnScreenOpened)
         val currentSetScore by remember {
@@ -53,12 +46,13 @@ fun PointScreen(
 
         LaunchedEffect(key1 = true) {
             viewModel.uiEvent.collect { event ->
-                when(event) {
+                when (event) {
                     is UiEvent.Navigate -> onNavigate(event)
                     else -> Unit
                 }
             }
         }
+
         Scaffold(
             scaffoldState = scaffoldState,
             floatingActionButton = {
@@ -75,19 +69,50 @@ fun PointScreen(
                 }
             }
         ) {
-            Column(modifier = Modifier) {
-                Row() {
-                    Text(text = "Whats happened in this point")
-                    Text(text = "Score")
-                }
-                actionList.let { actionList ->
-                    LazyColumn(modifier = Modifier.fillMaxSize()) {
-                        items(actionList) { action ->
-                            ActionItem(action, actionList.indexOf(action) + 1)
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (actionList.isNullOrEmpty()) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            modifier = Modifier
+                                .background(
+                                    color = Color.Gray,
+                                    shape = RoundedCornerShape(6.dp)
+                                )
+                                .padding(16.dp),
+                            text = "Add plays for this point",
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            fontSize = 26.sp,
+                        )
+                    }
+                    actionList.let { actionList ->
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            items(actionList) { action ->
+                                ActionItem(action, actionList.indexOf(action) + 1)
+                            }
+                            item {
+                                Spacer(modifier = Modifier.height(64.dp))
+                            }
                         }
                     }
                 }
-
+                Button(
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(16.dp)
+                ) {
+                    Text("Button")
+                }
             }
         }
     }
@@ -173,7 +198,6 @@ fun ActionItem(
                     fontSize = 20.sp,
                     modifier = Modifier.fillMaxHeight()
                 )
-
             }
         }
     }
