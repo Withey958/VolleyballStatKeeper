@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arete.arete.volleyballstatkeeper.VolleyballStatKeeperScreen
 import arete.arete.volleyballstatkeeper.model.Game
+import arete.arete.volleyballstatkeeper.model.Point
 import arete.arete.volleyballstatkeeper.repositories.GameRepository
 import arete.arete.volleyballstatkeeper.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,6 +33,7 @@ class ScreenGameViewModel @Inject constructor(private val repository: GameReposi
             }
             is GameEvent.AddPoint -> {
                 sendUiEvent(UiEvent.Navigate(VolleyballStatKeeperScreen.PointScreen.name))
+                repository.newPoint(Point(gameState.value?.homeTeam?.teamPlayers!!))
             }
         }
     }

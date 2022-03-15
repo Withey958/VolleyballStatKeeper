@@ -31,6 +31,8 @@ class ScreenActionViewModel @Inject constructor(private val repository: GameRepo
         private set
     var actionResultList = mutableStateOf<List<ActionResult>>(listOf())
         private set
+    var players = mutableStateOf<List<Player>>(listOf())
+        private set
 
 
     fun onEvent(event: ActionEvent) {
@@ -58,6 +60,9 @@ class ScreenActionViewModel @Inject constructor(private val repository: GameRepo
                 )
                 Log.d(TAG, "onEvent: enter result")
                 sendUiEvent(UiEvent.Navigate(VolleyballStatKeeperScreen.PointScreen.name))
+            }
+            is ActionEvent.OnScreenOpened -> {
+                players.value = repository.getCurrentGame()?.homeTeam?.teamPlayers!!
             }
         }
     }

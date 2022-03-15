@@ -46,12 +46,10 @@ fun PointScreen(
             viewModel.setScoreState
         }
         val scaffoldState = rememberScaffoldState()
-//        val actionList by remember {
-//            viewModel.pointActionListState
-//        }
-        val actionList = arrayListOf<Action>(
-            Action(Player("Keith"), ActionType.ATTACK, ActionResult.BLOCKED)
-        )
+        val actionList by remember {
+            viewModel.pointActionListState
+        }
+
 
         LaunchedEffect(key1 = true) {
             viewModel.uiEvent.collect { event ->
@@ -82,11 +80,14 @@ fun PointScreen(
                     Text(text = "Whats happened in this point")
                     Text(text = "Score")
                 }
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(actionList) { action ->
-                        ActionItem(action, actionList.indexOf(action) + 1)
+                actionList.let { actionList ->
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        items(actionList) { action ->
+                            ActionItem(action, actionList.indexOf(action) + 1)
+                        }
                     }
                 }
+
             }
         }
     }

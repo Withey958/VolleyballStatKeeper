@@ -43,16 +43,17 @@ fun ActionScreen(
         )
     ) {
 
-        val players = listOf<Player>(
-            Player("Luke"),
-            Player("Charlie"),
-            Player("Wojtek"),
-            Player("Paul"),
-            Player("Haris"),
-            Player("Nick")
-        )
+        viewModel.onEvent(ActionEvent.OnScreenOpened)
+
+        val players by remember {
+            viewModel.players
+        }
 
         val actions = ActionType.getListOfActions()
+
+        val playerSelectedState by remember {
+            viewModel.playerSelectedState
+        }
 
         val actionResultList by remember {
             viewModel.actionResultList
@@ -69,7 +70,7 @@ fun ActionScreen(
             if (actionResultList.isNotEmpty()) {
                 MultiToggleButtonResult(actionResultList, viewModel)
             }
-            if (actionSelectedResult != null) {
+            if (actionSelectedResult != null && playerSelectedState != null) {
                 Spacer(modifier = Modifier.padding(16.dp))
                 Button(
                     onClick = { viewModel.onEvent(ActionEvent.OnEnterResult) },

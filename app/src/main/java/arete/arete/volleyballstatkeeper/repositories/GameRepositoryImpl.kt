@@ -82,7 +82,7 @@ class GameRepositoryImpl : GameRepository {
 
     override fun newPoint(point: Point) {
         val currentSet = game?.sets?.last()
-        currentSet?.addPoint(point)
+        currentSet?.newPoint(point)
     }
 
     override fun getPointActions(): ArrayList<Action> {
@@ -92,7 +92,6 @@ class GameRepositoryImpl : GameRepository {
 
     override fun addAction(action: Action) {
         val currentSet = game?.sets?.last()
-        currentSet?.newPoint(Point(game?.homeTeam?.teamPlayers!!))
         currentSet?.points?.last()?.addAction(action)
         when (action.actionResult) {
             ActionResult.ACE, ActionResult.BLOCK_KILL, ActionResult.KILL -> {

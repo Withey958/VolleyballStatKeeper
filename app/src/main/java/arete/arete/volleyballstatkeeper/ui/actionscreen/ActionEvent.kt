@@ -9,5 +9,6 @@ sealed class ActionEvent {
     data class OnPlayerSelected(val player: Player): ActionEvent()
     data class OnActionTypeSelected(val actionType: ActionType): ActionEvent()
     data class OnResultTypeSelected(val resultType: ActionResult): ActionEvent()
+    object OnScreenOpened: ActionEvent()
     object OnEnterResult: ActionEvent()
 }
