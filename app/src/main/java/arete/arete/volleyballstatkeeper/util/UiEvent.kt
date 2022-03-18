@@ -7,4 +7,5 @@ sealed class UiEvent {
         val message: String,
         val action: String? = null
     ): UiEvent()
+    data class ShowDialog(val show: Boolean): UiEvent()
 }

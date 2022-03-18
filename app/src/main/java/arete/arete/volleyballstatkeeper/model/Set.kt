@@ -12,8 +12,7 @@ class Set(game: Game) {
         points.add(point)
     }
 
-    fun addPoint(point: Point) {
-        score[point.winningTeam] = score[point.winningTeam]!! + 1
-        points.add(point)
+    fun updateScore() {
+        score[points.last().winningTeam] = score[points.last().winningTeam]!! + 1
     }
 }

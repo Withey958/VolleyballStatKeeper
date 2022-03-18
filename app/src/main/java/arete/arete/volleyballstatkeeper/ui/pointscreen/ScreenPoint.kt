@@ -1,6 +1,7 @@
 package arete.arete.volleyballstatkeeper.ui.pointscreen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,6 +9,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,15 +42,19 @@ fun PointScreen(
             viewModel.setScoreState
         }
         val scaffoldState = rememberScaffoldState()
-        val actionList by remember {
-            viewModel.pointActionListState
-        }
+
 
 
         LaunchedEffect(key1 = true) {
             viewModel.uiEvent.collect { event ->
                 when (event) {
                     is UiEvent.Navigate -> onNavigate(event)
+                    is UiEvent.ShowSnackbar -> {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            message = event.message,
+                            actionLabel = event.action
+                        )
+                    }
                     else -> Unit
                 }
             }
@@ -69,50 +76,72 @@ fun PointScreen(
                 }
             }
         ) {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)) {
+            FinishPointDialog(viewModel = viewModel)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 8.dp)
+            ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    if (actionList.isNullOrEmpty()) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            modifier = Modifier
-                                .background(
-                                    color = Color.Gray,
-                                    shape = RoundedCornerShape(6.dp)
-                                )
-                                .padding(16.dp),
-                            text = "Add plays for this point",
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            fontSize = 26.sp,
-                        )
-                    }
-                    actionList.let { actionList ->
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            items(actionList) { action ->
-                                ActionItem(action, actionList.indexOf(action) + 1)
-                            }
-                            item {
-                                Spacer(modifier = Modifier.height(64.dp))
-                            }
-                        }
-                    }
+                    ActionList(viewModel = viewModel)
                 }
-                Button(
-                    onClick = { /*TODO*/ },
+                Column(
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .padding(16.dp)
+                        .align(Alignment.BottomCenter),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom
                 ) {
-                    Text("Button")
+//                    WinnerSelectionButton(viewModel = viewModel)
+                    Button(
+                        onClick = { viewModel.onEvent(PointEvent.ShowDialog) },
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .size(width = 160.dp, height = 64.dp),
+                        shape = RoundedCornerShape(24.dp)
+                    ) {
+                        Text("Finish Point")
+                    }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun ActionList(viewModel: ScreenPointViewModel) {
+
+    val actionList by remember {
+        viewModel.pointActionListState
+    }
+
+    if (actionList.isNullOrEmpty()) {
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            modifier = Modifier
+                .background(
+                    color = Color.Gray,
+                    shape = RoundedCornerShape(6.dp)
+                )
+                .padding(16.dp),
+            text = "Add plays for this point",
+            fontWeight = FontWeight.Bold,
+            color = Color.White,
+            fontSize = 26.sp,
+        )
+    }
+    actionList.let { actionList ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            items(actionList) { action ->
+                ActionItem(action, actionList.indexOf(action) + 1)
+            }
+            item {
+                Spacer(modifier = Modifier.height(128.dp))
             }
         }
     }
@@ -200,5 +229,44 @@ fun ActionItem(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun FinishPointDialog(viewModel: ScreenPointViewModel) {
+
+    val showDialog by remember {
+        viewModel.dialogShowState
+    }
+
+    val gameState by remember {
+        viewModel.gameState
+    }
+
+    val homeTeam = gameState!!.homeTeam
+    val awayTeam = gameState!!.awayTeam
+
+    if (showDialog) {
+        AlertDialog(
+            backgroundColor = Color.DarkGray,
+            title = {
+                Text(
+                    text = "Team that won the point",
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            onDismissRequest = { viewModel.onEvent(PointEvent.HideDialog) },
+            dismissButton = {
+                Button(onClick = { viewModel.onEvent(PointEvent.UpdateWinningTeam(homeTeam)) }) {
+                    Text(text = homeTeam.name)
+                }
+            },
+            confirmButton = {
+                Button(onClick = { viewModel.onEvent(PointEvent.UpdateWinningTeam(awayTeam)) }) {
+                    Text(text = awayTeam.name)
+                }
+            }
+        )
     }
 }

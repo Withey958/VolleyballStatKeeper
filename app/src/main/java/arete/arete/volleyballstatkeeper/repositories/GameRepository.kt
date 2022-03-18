@@ -13,4 +13,5 @@ interface GameRepository {
     fun checkGameStatus(): Boolean
     fun newGame(homeTeam: Team?, awayTeam: Team?)
     fun getCurrentGame(): Game?
+    fun setPointWinners(team: Team)
 }

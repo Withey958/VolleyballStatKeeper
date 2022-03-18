@@ -90,6 +90,12 @@ class GameRepositoryImpl : GameRepository {
         return currentSet?.points?.last()?.getActions()!!
     }
 
+    override fun setPointWinners(team: Team) {
+        val currentSet = game?.sets?.last()
+        currentSet?.points?.last()?.addFinalResult(team)
+        currentSet?.updateScore()
+    }
+
     override fun addAction(action: Action) {
         val currentSet = game?.sets?.last()
         currentSet?.points?.last()?.addAction(action)

@@ -75,6 +75,8 @@ fun ActionScreen(
                     modifier = Modifier
                         .padding(8.dp)
                         .align(Alignment.CenterHorizontally)
+                        .size(width = 160.dp, height = 64.dp),
+                    shape = RoundedCornerShape(24.dp)
                 ) {
                     Text(text = "Enter Result")
                 }

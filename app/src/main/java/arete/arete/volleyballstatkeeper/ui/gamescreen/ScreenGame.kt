@@ -66,11 +66,11 @@ fun GameScreen(
             AddPointButton(viewModel = viewModel)
         }
     }
-
 }
 
 @Composable
 fun ScoreBoard(game: Game?) {
+
     Card(
         backgroundColor = Color.DarkGray,
         modifier = Modifier
