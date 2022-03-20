@@ -209,6 +209,7 @@ fun PlayerLists(modifier: Modifier, game: Game?) {
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp)
             .background(color = Color.Gray)
+            .padding(bottom = 8.dp)
     ) {
         LazyColumn(
             modifier = Modifier
@@ -291,7 +292,8 @@ fun StatView(viewModel: ScreenGameViewModel) {
         Modifier
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp)
-            .background(Color.Gray),
+            .background(Color.Gray)
+            .padding(top = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         StatItem(statname = "Attacks")
