@@ -27,7 +27,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import arete.arete.volleyballstatkeeper.model.Game
 import arete.arete.volleyballstatkeeper.model.Player
 import arete.arete.volleyballstatkeeper.model.VolleyballPosition
-import arete.arete.volleyballstatkeeper.ui.theme.spacing
 import arete.arete.volleyballstatkeeper.util.UiEvent
 import kotlinx.coroutines.flow.collect
 
@@ -61,7 +60,8 @@ fun GameScreen(
 
         Column(
             modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
             ScoreBoard(viewModel)
             when (currentTab) {
@@ -100,7 +100,7 @@ fun ScoreBoard(viewModel: ScreenGameViewModel) {
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(start = 8.dp, end = 8.dp, top = 8.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             val tabButtonModifier = Modifier
@@ -204,7 +204,12 @@ fun TabButton(
 
 @Composable
 fun PlayerLists(modifier: Modifier, game: Game?) {
-    Row(modifier = modifier.fillMaxWidth()) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = 8.dp, end = 8.dp)
+            .background(color = Color.Gray)
+    ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth(0.5f)
@@ -285,21 +290,37 @@ fun StatView(viewModel: ScreenGameViewModel) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            .padding(start = 8.dp, end = 8.dp)
+            .background(Color.Gray),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         StatItem(statname = "Attacks")
         StatItem(statname = "Blocks")
         StatItem(statname = "Errors")
-        StatItem(statname = "Aces") 
+        StatItem(statname = "Aces")
     }
 }
 
 @Composable
 fun StatItem(statname: String) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Text(text = statname, modifier = Modifier.align(Alignment.CenterHorizontally))
-        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-            Text(text = "0")
-            Text(text = "0")
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+    ) {
+        Text(
+            text = statname,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            color = Color.White
+        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "0", fontWeight = FontWeight.ExtraBold, color = Color.White)
+            Text(text = "0", fontWeight = FontWeight.ExtraBold, color = Color.White)
         }
     }
 }
