@@ -23,6 +23,9 @@ class ScreenGameViewModel @Inject constructor(private val repository: GameReposi
     var gameState = mutableStateOf<Game?>(null)
         private set
 
+    var tabbedState = mutableStateOf<Int>(1)
+        private set
+
     fun onEvent(event: GameEvent) {
         when (event) {
             is GameEvent.OnGameStarted -> {
@@ -34,6 +37,9 @@ class ScreenGameViewModel @Inject constructor(private val repository: GameReposi
             is GameEvent.AddPoint -> {
                 sendUiEvent(UiEvent.Navigate(VolleyballStatKeeperScreen.PointScreen.name))
                 repository.newPoint(Point(gameState.value?.homeTeam?.teamPlayers!!))
+            }
+            is GameEvent.ChangeTab -> {
+                tabbedState.value = event.tab
             }
         }
     }
