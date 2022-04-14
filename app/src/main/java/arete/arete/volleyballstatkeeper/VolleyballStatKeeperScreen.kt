@@ -6,7 +6,9 @@ enum class VolleyballStatKeeperScreen(
 ) {
     ActionScreen,
     PointScreen,
-    GameScreen;
+    GameScreen,
+    HomeScreen,
+    CreateTeamScreen;
 
 
     companion object {
@@ -15,7 +17,9 @@ enum class VolleyballStatKeeperScreen(
                 ActionScreen.name -> ActionScreen
                 PointScreen.name -> PointScreen
                 GameScreen.name -> GameScreen
-                null -> ActionScreen
+                HomeScreen.name -> HomeScreen
+                CreateTeamScreen.name -> CreateTeamScreen
+                null -> HomeScreen
                 else -> throw IllegalArgumentException("Route $route is not recognized.")
             }
     }

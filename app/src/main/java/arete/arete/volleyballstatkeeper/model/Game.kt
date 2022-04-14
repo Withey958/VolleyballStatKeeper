@@ -9,4 +9,8 @@ class Game(
     fun setSet(set: Set) {
         sets.add(set)
     }
+
+    fun getCurrentSet(): Set {
+        return this.sets.last()
+    }
 }
