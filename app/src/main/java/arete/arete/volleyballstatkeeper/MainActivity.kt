@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import arete.arete.volleyballstatkeeper.ui.actionscreen.ActionScreen
 import arete.arete.volleyballstatkeeper.ui.gamescreen.GameScreen
+import arete.arete.volleyballstatkeeper.ui.homescreen.HomeScreen
 import arete.arete.volleyballstatkeeper.ui.pointscreen.PointScreen
 import arete.arete.volleyballstatkeeper.ui.theme.VolleyballStatKeeperTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -84,12 +85,7 @@ fun VolleyballStatKeeperNavHost(navController: NavHostController, modifier: Modi
             )
         }
         composable(VolleyballStatKeeperScreen.HomeScreen.name) {
-            PointScreen(
-                onNavigate = { navController.navigate(it.route) }
-            )
-        }
-        composable(VolleyballStatKeeperScreen.CreateTeamScreen.name) {
-            GameScreen(
+            HomeScreen(
                 onNavigate = { navController.navigate(it.route) }
             )
         }
